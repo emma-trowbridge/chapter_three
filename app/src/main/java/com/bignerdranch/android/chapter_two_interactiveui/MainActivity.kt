@@ -1,12 +1,16 @@
 package com.bignerdranch.android.chapter_two_interactiveui
 
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bignerdranch.android.chapter_two_interactiveui.databinding.ActivityMainBinding
+
+private const val Tag = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         //setContentView(R.layout.activity_main)
 
+        Log.d(Tag, "onCreate(Bundle) called")
+
         //trueButton = findViewById(R.id.true_button)
         //falseButton = findViewById(R.id.false_button)
 
@@ -60,6 +66,15 @@ class MainActivity : AppCompatActivity() {
             checkAnswer(userAnswer = false)
             }
 
+        binding.previousButton.setOnClickListener{
+            currentIndex = if (currentIndex - 1 < 0) {
+                questionBank.size - 1 //wraps around to the last question
+            }else {
+                (currentIndex - 1) % questionBank.size
+            }
+            updateQuestion()
+        }
+
         binding.nextButton.setOnClickListener{
             currentIndex = (currentIndex + 1) % questionBank.size
             //val questionTextResId = questionBank[currentIndex].textResId
@@ -71,6 +86,30 @@ class MainActivity : AppCompatActivity() {
         //binding.questionTextView.setText(questionTextResId)
         updateQuestion()
         }
+
+        //logs:
+
+        override fun onStart(){
+            super.onStart()
+            Log.d(Tag, "onStart() called")
+
+        }
+
+        override fun onPause(){
+            super.onPause()
+            Log.d(Tag, "onPause() called")
+        }
+
+        override fun onStop(){
+            super.onStop()
+            Log.d(Tag, "onStop() called")
+        }
+
+        override fun onDestroy(){
+            super.onDestroy()
+            Log.d(Tag, "onDestroy() called")
+        }
+
 
         private fun updateQuestion(){
             val questionTextResId = questionBank[currentIndex].textResId
