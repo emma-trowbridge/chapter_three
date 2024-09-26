@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     )//created list of questions...
         //from Question.kt - looks for integer (R.string.question.()), and then boolean (true or false)
 
+    private var answers = arrayOfNulls<Boolean>(questionBank.size) //tracks answer of each question, null = unanswered
+
     private var currentIndex = 0 //always start with 0, first value of index is "0"
     private lateinit var binding: ActivityMainBinding
 
@@ -81,8 +83,9 @@ class MainActivity : AppCompatActivity() {
         binding.questionTextView.setOnClickListener{
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
-
         }
+
+        //got rid of enableAnswerButtons() from next, previous, and question buttons
 
         //var questionTextResId = questionBank[currentIndex].textResId
         //binding.questionTextView.setText(questionTextResId)
@@ -116,11 +119,17 @@ class MainActivity : AppCompatActivity() {
         private fun updateQuestion(){
             val questionTextResId = questionBank[currentIndex].textResId
             binding.questionTextView.setText(questionTextResId)
+
+            val answered = answers[currentIndex]
+            if (answered != null) {
+                disableAnswerButtons() //if answered, disabled buttons
+            } else {
+                enableAnswerButtons() //else enable the buttons so the user answers the question
+            }
         }
 
         private fun checkAnswer(userAnswer:Boolean){
             val correctAnswer = questionBank[currentIndex].answer //grabbing second quality
-
             val messageResID = if (userAnswer == correctAnswer){
                 R.string.correct
             } else{
@@ -133,6 +142,18 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT)
                 .show()
 
+            answers[currentIndex] = userAnswer == correctAnswer //saves the users answer, boolean = true/false
+
+            disableAnswerButtons() // disables both buttons after user answers
         }
 
+        private fun disableAnswerButtons() {
+            binding.trueButton.isEnabled = false
+            binding.falseButton.isEnabled = false
+        }
+
+        private  fun enableAnswerButtons() {
+            binding.trueButton.isEnabled = true
+            binding.falseButton.isEnabled = true
+        }
     }
