@@ -1,14 +1,10 @@
-package com.bignerdranch.android.chapter_two_interactiveui
+package com.bignerdranch.android.chapter_three
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.bignerdranch.android.chapter_two_interactiveui.databinding.ActivityMainBinding
+import com.bignerdranch.android.chapter_three.databinding.ActivityMainBinding
 
 private const val Tag = "MainActivity"
 
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
         }
 
-        binding.nextButton.setOnClickListener{
+        binding.nextButton.setOnClickListener {
             currentIndex = (currentIndex + 1) % questionBank.size
             //val questionTextResId = questionBank[currentIndex].textResId
             //binding.questionTextView.setText(questionTextResId)

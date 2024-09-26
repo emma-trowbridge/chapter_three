@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bignerdranch.android.chapter_two_interactiveui"
+    namespace = "com.bignerdranch.android.chapter_three"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.bignerdranch.android.chapter_two_interactiveui"
+        applicationId = "com.bignerdranch.android.chapter_three"
         minSdk = 34
         targetSdk = 34
         versionCode = 1

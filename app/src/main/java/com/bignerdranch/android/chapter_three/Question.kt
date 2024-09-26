@@ -1,4 +1,4 @@
-package com.bignerdranch.android.chapter_two_interactiveui
+package com.bignerdranch.android.chapter_three
 
 import androidx.annotation.StringRes
 
