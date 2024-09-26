@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private var answers = arrayOfNulls<Boolean>(questionBank.size) //tracks answer of each question, null = unanswered
 
+    private var correctAnswerCount = 0
+
     private var currentIndex = 0 //always start with 0, first value of index is "0"
     private lateinit var binding: ActivityMainBinding
 
@@ -85,6 +87,10 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
         }
 
+        binding.resetButton.setOnClickListener {
+            resetQuiz()
+        }
+
         //got rid of enableAnswerButtons() from next, previous, and question buttons
 
         //var questionTextResId = questionBank[currentIndex].textResId
@@ -131,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         private fun checkAnswer(userAnswer:Boolean){
             val correctAnswer = questionBank[currentIndex].answer //grabbing second quality
             val messageResID = if (userAnswer == correctAnswer){
+                correctAnswerCount++ //increments amount to counter
                 R.string.correct
             } else{
                 R.string.incorrect
@@ -143,8 +150,11 @@ class MainActivity : AppCompatActivity() {
                 .show()
 
             answers[currentIndex] = userAnswer == correctAnswer //saves the users answer, boolean = true/false
-
             disableAnswerButtons() // disables both buttons after user answers
+
+            if (currentIndex == questionBank.size - 1) {
+                computeUserScore() //checks to see if last question has been answered, if so it computes user's score after last question
+            }
         }
 
         private fun disableAnswerButtons() {
@@ -155,5 +165,32 @@ class MainActivity : AppCompatActivity() {
         private  fun enableAnswerButtons() {
             binding.trueButton.isEnabled = true
             binding.falseButton.isEnabled = true
+        }
+
+        private fun computeUserScore() {
+            val score = (correctAnswerCount.toDouble() / questionBank.size) * 100
+            val scoreMessage = String.format("Your score is: %.1f%%", score) //%.1f formats to 1 dec place, %% adds %
+            Toast.makeText(
+                this,
+                scoreMessage,
+                Toast.LENGTH_LONG,
+            )
+                .show()
+        }
+        private fun resetQuiz() {
+            correctAnswerCount = 0 //reset correct answer counter
+            currentIndex = 0 //reset question index
+            answers = arrayOfNulls(questionBank.size) //resets answers to null (unanswered)
+
+            enableAnswerButtons()
+
+            updateQuestion()
+
+            Toast.makeText(
+                this,
+                "Quiz has been reset. Try again !",
+                Toast.LENGTH_LONG
+            )
+                .show()
         }
     }
