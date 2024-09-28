@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(Tag, "onCreate(Bundle) called")
 
+        //log = logging messages in logcat
+        //d = debug
+        //tag = identifies source of log message
+
         //trueButton = findViewById(R.id.true_button)
         //falseButton = findViewById(R.id.false_button)
 
@@ -105,6 +109,11 @@ class MainActivity : AppCompatActivity() {
             Log.d(Tag, "onStart() called")
 
         }
+
+        override fun onResume() {
+            super.onResume()
+            Log.d(Tag, "onResume() called")
+    }
 
         override fun onPause(){
             super.onPause()
